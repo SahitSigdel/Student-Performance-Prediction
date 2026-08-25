@@ -71,26 +71,27 @@ Volunteering = st.selectbox("Volunteering", [0, 1])
 # Prediction
 
 if st.button("Predict GPA"):
+    try:
+        input_data = pd.DataFrame({
+            "Age": [Age],
+            "Gender": [Gender],
+            "Ethnicity": [Ethnicity],
+            "ParentalEducation": [ParentalEducation],
+            "StudyTimeWeekly": [StudyTimeWeekly],
+            "Absences": [Absences],
+            "Tutoring": [Tutoring],
+            "ParentalSupport": [ParentalSupport],
+            "Extracurricular": [Extracurricular],
+            "Sports": [Sports],
+            "Music": [Music],
+            "Volunteering": [Volunteering]
+        })
 
-    input_data = pd.DataFrame({
-        "Age": [Age],
-        "Gender": [Gender],
-        "Ethnicity": [Ethnicity],
-        "ParentalEducation": [ParentalEducation],
-        "StudyTimeWeekly": [StudyTimeWeekly],
-        "Absences": [Absences],
-        "Tutoring": [Tutoring],
-        "ParentalSupport": [ParentalSupport],
-        "Extracurricular": [Extracurricular],
-        "Sports": [Sports],
-        "Music": [Music],
-        "Volunteering": [Volunteering]
-    })
+        prediction = model.predict(input_data)
+        predicted_gpa = prediction[0]
 
-    prediction = model.predict(input_data)
+        st.write(input_data)
+        st.success("The predicted GPA is: " + str(round(predicted_gpa, 2)))
 
-    predicted_gpa = prediction[0]
-    
-    st.write(input_data)
-
-    st.success("The predicted GPA is: " + str(round(predicted_gpa, 2)))
+    except Exception as e:
+        st.error(f"Something went wrong while predicting: {e}")
